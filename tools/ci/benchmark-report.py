@@ -206,16 +206,7 @@ def make_report(
     else:
         headline = '✅ Benchmarks: no significant changes'
 
-    out = [
-        f'## {headline}',
-        '',
-        f'Compared {len(rows)} benchmark results of {after_label} with '
-        f'{before_label}.  Listed as slower or faster are those which changed '
-        f'by more than a factor of {factor} if asv also considers the change '
-        'statistically significant.  Timings on shared CI runners are noisy, '
-        'so double-check changes close to that factor locally (e.g. with '
-        '`asv continuous`).',
-    ]
+    out = [f'## {headline}']
     for note in notes.strip().splitlines():
         out += ['', f'> ⚠️ {note}']
 
@@ -223,13 +214,12 @@ def make_report(
         ('slower', '🐢 Slower', None),
         ('faster', '🚀 Faster', None),
         ('failing', '❌ Failing',
-         f'Those which failed for {before_label} too are not broken by '
-         f'{after_label}, but still fail the job until fixed there.'),
+         f'Those failing for {before_label} too are not caused by '
+         f'{after_label}, but still fail the job.'),
         ('failing_before', 'Failing only before',
-         f'These fail only for {before_label}, e.g. since they use '
-         f'functionality which is new in {after_label}.'),
+         f'Likely they use functionality new in {after_label}.'),
         ('incomparable', 'Not comparable',
-         'The code of these benchmarks differs between both sides.'),
+         'Their code differs between both sides.'),
     ]
     for category, title, description in sections:
         selected = categories[category]
@@ -247,9 +237,10 @@ def make_report(
         '',
         *md_full_table(sorted(rows, key=lambda r: r.name), before, after),
         '',
-        f'Ratio is {after_label} relative to {before_label}.  A ratio prefixed '
-        'with `~` exceeds the factor, but asv does not consider the change '
-        'statistically significant.',
+        f'Slower/faster: changed by more than a factor of {factor}, '
+        'significantly so according to asv; `~`: beyond the factor, but not '
+        f'significant.  Ratio: {after_label} relative to {before_label}.  CI '
+        'timings are noisy, check close calls locally with `asv continuous`.',
         '',
         '</details>',
     ]
