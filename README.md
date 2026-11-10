@@ -13,3 +13,5 @@ benchmark comparison gets reported to PRs, including PRs from forks.
 
 A PR selects a scenario by changing the content of `scenario` to one of
 `slower`, `nochange` or `notes`.
+
+Scenario F2: PR from a fork without significant changes.
