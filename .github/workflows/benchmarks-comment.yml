@@ -80,7 +80,7 @@ jobs:
           # prevents mentions
           sed -E 's/&(#0*64|#[xX]0*40|commat);?/@/g; s/@/@\xe2\x80\x8b/g' "$REPORT_DIR/report.md"
           echo
-          echo "<sub>Benchmarked PR head ${HEAD_SHA:0:8}, merged into its target branch. See the [workflow run]($RUN_URL) for details.</sub>"
+          echo "<sub>PR head ${HEAD_SHA:0:8} merged into its target branch, [workflow run]($RUN_URL)</sub>"
         } > "$body"
 
         comment_id=$(
